@@ -20,5 +20,5 @@ jobs:
       run: nix profile install github:cachix/devenv/v0.5.1
       shell: sh
     - run: devenv ci
-    - run: check
+    - run: devenv shell check
     - run: devenv shell echo ok
