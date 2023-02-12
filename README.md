@@ -2,6 +2,6 @@
 
 Autogenerate AWS SSO config for all roles you have access to.
 
-Usage: `deno run --allow-net --allow-run --allow-read --allow-env configure.ts`
+## Developing
 
-(Or just run ./aws_autoconfigure_sso from the releases.)
+Using `devenv`

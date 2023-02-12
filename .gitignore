@@ -1,1 +1,6 @@
 dist
+
+# Devenv
+.devenv*
+devenv.local.nix
+
