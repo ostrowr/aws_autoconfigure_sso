@@ -1,13 +1,13 @@
 import * as path from "https://deno.land/std@0.177.0/path/mod.ts";
-import { $, question, colors } from "https://deno.land/x/zx_deno@1.2.2/mod.mjs";
+import { $, colors, question } from "https://deno.land/x/zx_deno@1.2.2/mod.mjs";
 
 $.verbose = false;
 const tempProfileName = crypto.randomUUID().replaceAll("-", "");
 
-const ssoStartUrl =
-  Deno.env.get("SSO_START_URL") ?? (await question("Enter SSO start URL:"));
-const region =
-  Deno.env.get("SSO_REGION") ?? (await question("Enter SSO region:"));
+const ssoStartUrl = Deno.env.get("SSO_START_URL") ??
+  (await question("Enter SSO start URL:"));
+const region = Deno.env.get("SSO_REGION") ??
+  (await question("Enter SSO region:"));
 await $`aws configure set sso_start_url ${ssoStartUrl} --profile ${tempProfileName}`;
 await $`aws configure set sso_region ${region} --profile research --profile ${tempProfileName}`;
 await $`aws sso login --profile ${tempProfileName}`;
@@ -24,7 +24,7 @@ const getAccessToken = async (startUrl: string) => {
     }
     try {
       const contents = JSON.parse(
-        Deno.readTextFileSync(path.join(ssoCacheDir, file.name))
+        Deno.readTextFileSync(path.join(ssoCacheDir, file.name)),
       );
       if (contents.startUrl === startUrl) {
         return contents.accessToken;
@@ -51,7 +51,7 @@ for (const account of accounts) {
   const rolesOutput =
     await $`aws sso list-account-roles --access-token ${accessToken} --account-id ${account.accountId} --region ${region} --no-cli-pager --output json`;
   const roles: { roleName: string; accountId: string }[] = JSON.parse(
-    rolesOutput.stdout
+    rolesOutput.stdout,
   ).roleList;
   for (const role of roles) {
     const options = {
@@ -62,11 +62,12 @@ for (const account of accounts) {
       region: region,
       output: "json",
     };
-    const comment =
-      colors.yellow(`# Access to the ${account.accountName} account (${account.accountId})
-# with the role ${role.roleName}`);
+    const comment = colors.yellow(
+      `# Access to the ${account.accountName} account (${account.accountId})
+# with the role ${role.roleName}`,
+    );
     const header = colors.blue(
-      `[profile ${account.accountName}-${role.roleName}]`
+      `[profile ${account.accountName}-${role.roleName}]`, // todo ensure names are unique
     );
     const body = Object.entries(options)
       .map(([name, value]) => `${colors.green(name)} = ${value}`)
@@ -75,7 +76,7 @@ for (const account of accounts) {
       `${comment}
 ${header}
 ${body}
-`
+`,
     );
   }
 }

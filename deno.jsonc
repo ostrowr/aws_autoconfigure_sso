@@ -1,0 +1,12 @@
+{
+  "tasks": {
+    "build-mac-arm": "deno compile --allow-net --allow-run --allow-read --allow-env --target=aarch64-apple-darwin --output dist/aws_autoconfigure_sso_macos_arm configure.ts",
+    "build-mac-x86": "deno compile --allow-net --allow-run --allow-read --allow-env --target=x86_64-apple-darwin --output dist/aws_autoconfigure_sso_macos_x86 configure.ts",
+    // "build-mac-universal": "deno task build-mac-arm && deno task build-mac-x86 && lipo dist/aws_autoconfigure_sso_macos_arm dist/aws_autoconfigure_sso_macos_x86 -create -output dist/aws_autoconfigure_sso_macos_universal",
+    "build-windows": "deno compile --allow-net --allow-run --allow-read --allow-env --target=x86_64-pc-windows-msvc --output dist/aws_autoconfigure_sso_windows configure.ts",
+    "build-linux": "deno compile --allow-net --allow-run --allow-read --allow-env --target=x86_64-unknown-linux-gnu --output dist/aws_autoconfigure_sso_linux configure.ts",
+    "build-all": "deno task build-mac-arm && deno task build-mac-x86 && deno task build-windows && deno task build-linux",
+    "test": "deno fmt --check && deno lint && deno check configure.ts",
+    "run": "deno run --allow-net --allow-run --allow-read --allow-env configure.ts"
+  }
+}
