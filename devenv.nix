@@ -2,11 +2,7 @@
 
 {
   # https://devenv.sh/packages/
-  packages = [
-    pkgs.git
-    pkgs.deno
-    pkgs.awscli2
-  ];
+  packages = [ pkgs.git pkgs.deno pkgs.awscli2 pkgs.gh ];
 
   enterShell = ''
     git --version
@@ -33,8 +29,10 @@
       '';
     };
     run = {
-      exec = "deno run --allow-net --allow-run --allow-read --allow-env src/configure.ts";
+      exec =
+        "deno run --allow-net --allow-run --allow-read --allow-env src/configure.ts";
     };
   };
 
+  pre-commit = { hooks.nixfmt.enable = true; };
 }
