@@ -15,7 +15,6 @@ await $`aws sso login --profile ${tempProfileName}`;
 
 const getAccessToken = async (startUrl: string) => {
   const ssoCacheDir = path.join(Deno.env.get("HOME") ?? "", ".aws/sso/cache");
-  console.log(ssoCacheDir);
 
   const files = Deno.readDir(ssoCacheDir);
   for await (const file of files) {
