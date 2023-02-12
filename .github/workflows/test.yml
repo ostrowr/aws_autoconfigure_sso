@@ -23,7 +23,11 @@ jobs:
     - run: devenv shell check
     - run: devenv shell echo ok
 
-    - uses: "marvinpinto/action-automatic-releases@latest"
+  prerelease:
+    runs-on: ${{ matrix.os }}
+    needs: tests
+    steps:
+    - uses: "marvinpinto/action-automatic-releases@1.2.1"
       if: github.ref == 'refs/heads/main'
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
